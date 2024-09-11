@@ -64,7 +64,7 @@ export default function Statistics() {
     setGifState(true);
     console.log(state, district, parameter, startingYear, endingYear, infoType);
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/statistics`, {
+      .get(`https://met-data-backend.onrender.com/api/statistics`, {
         params: {
           state,
           district,
