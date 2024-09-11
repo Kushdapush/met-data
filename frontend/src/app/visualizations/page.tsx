@@ -56,7 +56,7 @@ export default function Visualizations() {
       return;
     }
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/visualizations`, {
+      .get(`https://met-data-backend.onrender.com/api/visualizations`, {
         params: {
           state,
           district,
