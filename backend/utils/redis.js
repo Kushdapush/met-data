@@ -1,23 +1,27 @@
 import { createClient } from 'redis';
+import dotenv from 'dotenv';
 
-const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
+dotenv.config();
 
-export const redisClient = createClient({
-    url: redisUrl
+const client = createClient({
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
+    socket: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT
+    }
 });
+
+client.on('error', err => console.log('Redis Client Error', err));
 
 export async function initializeRedis() {
     try {
-        await redisClient.connect();
+        await client.connect();
         console.log('Connected to Redis');
     } catch (err) {
         console.error('Error connecting to Redis:', err);
     }
 }
-
-redisClient.on('error', (err) => {
-    console.error('Redis error:', err);
-});
 
 export const getCache = async (client, key) => {
     try {
@@ -36,3 +40,5 @@ export const setCache = async (client, key, value, expiration = 3600) => {
         console.error('Redis set error:', err);
     }
 };
+
+export { client as redisClient };
